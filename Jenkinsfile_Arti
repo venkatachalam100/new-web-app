@@ -1,0 +1,37 @@
+pipeline{
+  agent any
+  tools {
+      git 'git'
+      maven 'maven'
+}
+
+  environment {
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+		
+  }
+
+stages{
+  stage('SCM Checkout'){
+     steps{
+ git 'https://github.com/mohansgithub/new-web-app.git'
+     }
+   }
+						
+      stage('Maven packing'){
+     steps{
+           bat label: '', script: 'mvn clean package'
+        }
+    }
+   stage('Upload to Artifactory') {
+        steps{
+		     withCredentials([usernamePassword(credentialsId: 'e3eeb993-a380-4c92-bb94-33768a001b89',usernameVariable: 'ARTIUSERNAME', passwordVariable: 'ARTIPASSWORD')]){
+			    bat label: '',script: 'hostname'
+                bat label: '', script: 'curl -X PUT -u %ARTIUSERNAME%:%ARTIPASSWORD% -T "%WORKSPACE%\\target\\myweb-0.0.7-SNAPSHOT.war" "http://localhost:8081/artifactory/mohan-maven/"'
+         
+        }        			
+	  }		
+    }
+}
+}
+				
+	
