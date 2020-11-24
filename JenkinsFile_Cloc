@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+  stages {
+    stage('Source code') {
+	  steps {
+	    git 'https://github.com/mohansgithub/FLIPAMAZON.git'
+	  }
+	}
+	stage('Deployment to Pre Prod') {
+	  steps {
+          bat """
+            cd $WORKSPACE
+            dir
+            COPY C:\\Temp\\cloc-1.88.exe $WORKSPACE\\cloc-1.88.exe
+            cloc-1.88 $WORKSPACE > C:\\Temp\\cloc.log
+          """
+            rtp parserName: 'HTML', nullAction: '1', stableText: '''
+			<pre>
+			   ${FILE:C:/Temp/cloc.log}
+			</pre>
+			     '''
+   	  }
+	}
+            
+  }
+}
+  
