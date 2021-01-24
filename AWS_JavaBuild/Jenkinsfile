@@ -1,0 +1,27 @@
+pipeline{
+  agent { node { label 'awsnode' } } 
+  tools {
+      git 'Git'
+      maven 'maven'
+  }
+
+  stages{
+    stage('SCM Checkout'){
+     steps{
+          git 'https://github.com/mohansgithub/new-web-app.git'
+          }
+  }
+
+    stage('Maven packing'){
+     steps{
+           sh label: '', script: 'mvn clean package'
+        }
+    }
+    stage('deploy to tomcat'){
+     steps{
+          deploy adapters: [tomcat9(credentialsId: '0553afe4-173c-4622-a422-8af26811047e', path: '', url: 'http://54.187.212.190:8080')], contextPath: '/new-web-app', war: '**/*.war'
+        }
+    }
+
+  }
+}
