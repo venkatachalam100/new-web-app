@@ -1,0 +1,30 @@
+Install Apache Maven
+After verifying java version on your system. Download Apache Maven from its official website or use the following command to download Apache Maven 3.6.2.
+
+cd /opt
+wget https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+Now extract downloaded archive using following command.
+
+sudo tar xzf apache-maven-3.6.3-bin.tar.gz
+sudo ln -s apache-maven-3.6.3 maven
+Step 3 – Setup Environment Variables
+As you have downloaded precompiled Apache Maven files on your system. Now set the environments variables by creating new file /etc/profile.d/maven.sh.
+
+sudo vi /etc/profile.d/maven.sh
+and add the following content.
+
+export M2_HOME=/opt/maven
+export PATH=${M2_HOME}/bin:${PATH}
+Now load the environment variables in current shell using following command.
+
+source /etc/profile.d/maven.sh
+Step 4 – Check Maven Version
+Apache Maven has been successfully configured on your system. Use the following command to check the version of installed Maven on your system.
+
+mvn -version
+
+Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: /opt/maven
+Java version: 11.0.6, vendor: Oracle Corporation, runtime: /usr/lib/jvm/java-11-openjdk-11.0.6.10-0.el8_1.x86_64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "4.18.0-147.3.1.el8_1.x86_64", arch: "amd64", family: "unix"
